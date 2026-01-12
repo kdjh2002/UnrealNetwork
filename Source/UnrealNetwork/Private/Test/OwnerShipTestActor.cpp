@@ -19,7 +19,7 @@ AOwnerShipTestActor::AOwnerShipTestActor()
 	OverlapCollision->SetupAttachment(RootComponent);
 	OverlapCollision->SetSphereRadius(400.0f);
 
-	bReplicates = true;	// ¾×ÅÍÀÇ ¸®ÇÃ¸®ÄÉÀÌ¼Ç È°¼ºÈ­
+	bReplicates = true;	// ì•¡í„°ì˜ ë¦¬í”Œë¦¬ì¼€ì´ì…˜ í™œì„±í™”
 }
 
 // Called when the game starts or when spawned
@@ -40,14 +40,14 @@ void AOwnerShipTestActor::Tick(float DeltaTime)
 	if (HasAuthority())
 	{
 		AActor* NextOwner = nullptr;
-		float MinDistance = OverlapCollision->GetScaledSphereRadius();
+		float MinDistance = OverlapCollision->GetScaledSphereRadius()* OverlapCollision->GetScaledSphereRadius();
 		TArray<AActor*> Actors;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ANetRoleCharacter::StaticClass(), Actors);
 
 		for (AActor* Actor : Actors)
 		{
 			float Distance = GetSquaredDistanceTo(Actor);
-			if (Distance < MinDistance)
+			if (Distance <= MinDistance)
 			{
 				MinDistance = Distance;
 				NextOwner = Actor;
@@ -55,7 +55,7 @@ void AOwnerShipTestActor::Tick(float DeltaTime)
 		}
 		if (GetOwner() != NextOwner)
 		{
-			SetOwner(NextOwner);	//ÀÚ½Å¿¡°Ô °¡Àå °¡±î¿î ANetRoleCharacter¸¦ ¿À³Ê·Î Ã³¸®
+			SetOwner(NextOwner);	//ìì‹ ì—ê²Œ ê°€ì¥ ê°€ê¹Œìš´ ANetRoleCharacterë¥¼ ì˜¤ë„ˆë¡œ ì²˜ë¦¬
 			FString OwnerName = GetOwner() ? GetOwner()->GetName() : TEXT("No Owner");
 			UE_LOG(LogTemp, Log, TEXT("New Owner : %s"), *OwnerName);
 		}
@@ -64,8 +64,8 @@ void AOwnerShipTestActor::Tick(float DeltaTime)
 	const FString LocalRoleString = UEnum::GetValueAsString(GetLocalRole());
 	const FString RemoteRoleString = UEnum::GetValueAsString(GetRemoteRole());
 
-	const FString OwnerString = GetOwner() ? GetOwner()->GetName() : TEXT("¿À³Ê ¾øÀ½");
-	const FString ConnectionString = GetNetConnection() ? TEXT("Ä¿³Ø¼Ç ÀÖÀ½") : TEXT("Ä¿³Ø¼Ç ¾øÀ½");
+	const FString OwnerString = GetOwner() ? GetOwner()->GetName() : TEXT("ì˜¤ë„ˆ ì—†ìŒ");
+	const FString ConnectionString = GetNetConnection() ? TEXT("ì»¤ë„¥ì…˜ ìˆìŒ") : TEXT("ì»¤ë„¥ì…˜ ì—†ìŒ");
 
 	const FString NetworkInfo = FString::Printf(
 		TEXT("LocalRole : %s\nRemoteRole : %s\nOwner : %s\nConnection : %s"),
