@@ -4,28 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "ReplicationCharacter.generated.h"
+#include "PracticeCharacter.generated.h"
 
 UCLASS()
-class UNREALNETWORK_API AReplicationCharacter : public ACharacter
+class UNREALNETWORK_API APracticeCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	AReplicationCharacter();
+	APracticeCharacter();
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
-	//리플리케이션 설정을 위한 필수 함수 오버라이드
+
+	//리플리케이션을 설정을 위한 필수 함수 오버라이드 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	UFUNCTION()
-	void OnRepNotify_Level();
-
+	UFUNCTION(Server, Reliable)
+	void Server_UpdateStats(int32 NewLevel, float NewHealth, float NewExp);
 public:
 	UFUNCTION(BlueprintCallable)
 	inline void TestSetLevel(int32 InLevel);
@@ -37,14 +36,18 @@ public:
 	inline void TestSetExp(float InExp);
 
 protected:
-	UPROPERTY(ReplicatedUsing = OnRepNotify_Level)	// Level이 리플리케이션 될 때마다 OnRepNotify_Level가 실행
+	UPROPERTY(VisibleAnywhere, Category = "UI")
+	UWidgetComponent* Health
+
+
+protected:
+	UPROPERTY(Replicated)
 	int32 Level = 1;
 
-	UPROPERTY(Replicated)	// 리플리케이션이 되지만 별도로 실행되는 함수는 없다.
+	UPROPERTY(Replicated)
 	float Health = 100.0f;
 
 	UPROPERTY(Replicated)
 	float Exp = 0.0f;
-
 
 };
