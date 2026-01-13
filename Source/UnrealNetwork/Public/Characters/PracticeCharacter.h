@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "PracticeCharacter.generated.h"
 
+class UInputMappingContext;
+class UInputAction;
+
 UCLASS()
 class UNREALNETWORK_API APracticeCharacter : public ACharacter
 {
@@ -20,34 +23,49 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
 	//리플리케이션을 설정을 위한 필수 함수 오버라이드 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	UFUNCTION(Server, Reliable)
-	void Server_UpdateStats(int32 NewLevel, float NewHealth, float NewExp);
-public:
-	UFUNCTION(BlueprintCallable)
-	inline void TestSetLevel(int32 InLevel);
+	UFUNCTION()
+	void Onkey1();
 
-	UFUNCTION(BlueprintCallable)
-	inline void TestSetHealth(float InHealth);
+	UFUNCTION()
+	void Onkey2();
 
-	UFUNCTION(BlueprintCallable)
-	inline void TestSetExp(float InExp);
+	UFUNCTION()
+	void Onkey3();
+
+private:
+	UFUNCTION()
+	void OnRef_Level();
+
+	UFUNCTION()
+	void OnRef_Exp();
+
+	UFUNCTION()
+	void OnRef_Health();
+
+	void UpdateLevel();
+	void UpdateExp();
+	void UpdateHealth();
+
 
 protected:
-	UPROPERTY(VisibleAnywhere, Category = "UI")
-	UWidgetComponent* Health
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<class UWidgetComponent> HealthWidgetComponent = nullptr;
 
-
-protected:
-	UPROPERTY(Replicated)
+	//리플리케이션 끝났을때 실행될 함수(위젯을 위해)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRef_Level, Category = "Stats")
 	int32 Level = 1;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRef_Health, Category = "Stats")
 	float Health = 100.0f;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRef_Exp, Category = "Stats")
 	float Exp = 0.0f;
 
+private:
+	UPROPERTY()
+	TWeakObjectPtr<class UDataLineWidget> HealthWidget = nullptr;
 };
