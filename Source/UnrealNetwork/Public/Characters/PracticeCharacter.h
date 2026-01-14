@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "PracticeCharacter.generated.h"
 
+DECLARE_DELEGATE_OneParam(FOnLevelUpdated, int32);
+DECLARE_DELEGATE_OneParam(FOnExpUpdated, float);
+
 class UInputMappingContext;
 class UInputAction;
 
@@ -26,6 +29,8 @@ protected:
 public:
 	//리플리케이션을 설정을 위한 필수 함수 오버라이드 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+public:
 
 	UFUNCTION()
 	void Onkey1();
@@ -50,6 +55,9 @@ private:
 	void UpdateExp();
 	void UpdateHealth();
 
+public:
+	FOnLevelUpdated OnLevelUpdated;
+	FOnExpUpdated OnExpUpdated;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -59,11 +67,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRef_Level, Category = "Stats")
 	int32 Level = 1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRef_Health, Category = "Stats")
-	float Health = 100.0f;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRef_Exp, Category = "Stats")
 	float Exp = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRef_Health, Category = "Stats")
+	float Health = 100.0f;
 
 private:
 	UPROPERTY()

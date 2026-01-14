@@ -4,31 +4,30 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "DataLineWidget.generated.h"
+#include "MainHUDWidget.generated.h"
 
-class UTextBlock;
+class UDataLineWidget;
 /**
  * 
  */
 UCLASS()
-class UNREALNETWORK_API UDataLineWidget : public UUserWidget
+class UNREALNETWORK_API UMainHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
 public:
 	UFUNCTION(BlueprintCallable)
-	void UpdataName(FText InName);
+	void UpdateLevel(int32 NewLevel);
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateIntValue(int32 InValue);
-
-	UFUNCTION(BlueprintCallable)	
-	void UpdateFloatValue(float InValue);
+	void UpdateExp(float NewExp);
 
 protected:
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> Name = nullptr;
+	TObjectPtr<UDataLineWidget> Level = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> Value = nullptr;
+	TObjectPtr<UDataLineWidget> Exp = nullptr;
+
+
+	
 };

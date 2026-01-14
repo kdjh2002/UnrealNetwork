@@ -5,6 +5,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Components/WidgetComponent.h"
 #include "UI/DataLineWidget.h"
+#include "Framework/PracticePlayerController.h"
 
 // Sets default values
 APracticeCharacter::APracticeCharacter()
@@ -69,11 +70,12 @@ void APracticeCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 
 void APracticeCharacter::OnRef_Level()
 {
+	UpdateLevel();
 }
 
 void APracticeCharacter::OnRef_Exp()
 {
-
+	UpdateExp();
 }
 void APracticeCharacter::OnRef_Health()
 {
@@ -92,7 +94,7 @@ void APracticeCharacter::UpdateHealth()
 {
 	if (HealthWidget.IsValid())
 	{
-		HealthWidget->UpdataFloatValue(Health);
+		HealthWidget->UpdateFloatValue(Health);
 	}
 }
 

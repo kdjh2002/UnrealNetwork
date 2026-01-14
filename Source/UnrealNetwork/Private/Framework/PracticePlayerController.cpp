@@ -7,9 +7,11 @@
 #include "EnhancedInputComponent.h"	//Input
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "InputAction.h"
 
 #include "Characters/PracticeCharacter.h"
 #include "GameFramework/PlayerState.h"
+#include "UI/MainHUDWidget.h"
 
 void APracticePlayerController::BeginPlay()
 {
@@ -76,7 +78,7 @@ void APracticePlayerController::Onkey1Press()
 
 	if (ControlledCharacter.IsValid())
 	{
-		//ControlledCharacter.Get()->OnKey1();
+		ControlledCharacter.Get()->Onkey1();
 	}
 }
 
@@ -89,7 +91,7 @@ void APracticePlayerController::Onkey2Press()
 	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, Str);
 	if (ControlledCharacter.IsValid())
 	{
-		//ControlledCharacter.Get()->OnKey2();
+		ControlledCharacter.Get()->Onkey2();
 	}
 }
 
@@ -103,6 +105,6 @@ void APracticePlayerController::Onkey3Press()
 
 	if (ControlledCharacter.IsValid())
 	{
-		//ControlledCharacter.Get()->OnKey3();
+		ControlledCharacter.Get()->Onkey3();
 	}
 }

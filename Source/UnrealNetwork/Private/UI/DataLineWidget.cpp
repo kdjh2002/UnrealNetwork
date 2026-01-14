@@ -9,13 +9,13 @@ void UDataLineWidget::UpdataName(FText InName)
 	Name->SetText(InName);
 }
 
-void UDataLineWidget::UpdataIntValue(int32 InValue)
+void UDataLineWidget::UpdateIntValue(int32 InValue)
 {
 	Value->SetText(FText::AsNumber(InValue));
 
 }
 
-void UDataLineWidget::UpdataFloatValue(float InValue)
+void UDataLineWidget::UpdateFloatValue(float InValue)
 {
 	Value->SetText(FText::AsNumber(static_cast<int32>(InValue)));
 
