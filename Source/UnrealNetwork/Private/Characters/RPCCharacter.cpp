@@ -2,6 +2,7 @@
 
 
 #include "Characters/RPCCharacter.h"
+#include "Camera/CameraShakeBase.h"
 
 // Sets default values
 ARPCCharacter::ARPCCharacter()
@@ -64,7 +65,7 @@ void ARPCCharacter::Client_OnHit_Implementation()
 
 void ARPCCharacter::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("맞았음"));
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("맞았음"));
 
 
 	Client_OnHit();	// ClientRPC로 호출
