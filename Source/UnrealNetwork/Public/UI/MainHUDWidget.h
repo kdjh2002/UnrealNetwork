@@ -22,10 +22,10 @@ public:
 	void UpdateExp(float NewExp);
 
 protected:
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UDataLineWidget> Level = nullptr;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<UDataLineWidget> Exp = nullptr;
 
 

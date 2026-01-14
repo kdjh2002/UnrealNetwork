@@ -84,10 +84,12 @@ void APracticeCharacter::OnRef_Health()
 
 void APracticeCharacter::UpdateLevel()
 {
+	OnLevelUpdated.Execute(Level);
 }
 
 void APracticeCharacter::UpdateExp()
 {
+	OnLevelUpdated.Execute(Exp);
 }
 
 void APracticeCharacter::UpdateHealth()

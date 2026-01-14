@@ -21,7 +21,7 @@ void APracticePlayerController::BeginPlay()
 	{
 		if (HUDWidgetClass)
 		{
-			HUDWidget = CreateWidget<UUserWidget>(this, HUDWidgetClass);
+			HUDWidget = CreateWidget<UMainHUDWidget>(this, HUDWidgetClass);
 			if (HUDWidget.IsValid())
 			{
 				HUDWidget.Get()->AddToViewport();
@@ -60,6 +60,27 @@ void APracticePlayerController::OnPossess(APawn* aPawn)
 {
 	Super::OnPossess(aPawn);
 	ControlledCharacter = Cast<APracticeCharacter>(aPawn);
+
+	ControlledCharacter->OnLevelUpdated.BindWeakLambda(
+		this,
+		[this](int NewLevel)
+		{
+			if (HUDWidget.IsValid())
+			{
+				HUDWidget->UpdateLevel(NewLevel);
+			}
+		}
+	);
+	ControlledCharacter->OnExpUpdated.BindWeakLambda(
+		this,
+		[this](float NewExp)
+		{
+			if (HUDWidget.IsValid())
+			{
+				HUDWidget->UpdateExp(NewExp);
+			}
+		}
+	);
 }
 
 void APracticePlayerController::OnUnPossess()

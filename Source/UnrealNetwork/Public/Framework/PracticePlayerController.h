@@ -47,7 +47,7 @@ protected:
 
 private:
 	UPROPERTY()
-	TWeakObjectPtr<UUserWidget> HUDWidget = nullptr;
+	TWeakObjectPtr<class UMainHUDWidget> HUDWidget = nullptr;
 
 	TWeakObjectPtr<class APracticeCharacter> ControlledCharacter = nullptr;
 };
