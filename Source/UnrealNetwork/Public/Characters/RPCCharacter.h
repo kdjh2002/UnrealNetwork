@@ -19,7 +19,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "TestRPC")
 	void Fire();
@@ -38,6 +38,9 @@ public:
 		AActor* DamagedActor, float Damage, const class UDamageType* DamageType, 
 		class AController* InstigatedBy, AActor* DamageCauser);
 
+	UFUNCTION()
+	void OnRef_Health();
+
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TestRPC")
@@ -51,4 +54,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effect")
 	TObjectPtr<class UNiagaraSystem> EffectClass = nullptr;
+
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRef_Health)
+	float Health = 100.0f;
 };

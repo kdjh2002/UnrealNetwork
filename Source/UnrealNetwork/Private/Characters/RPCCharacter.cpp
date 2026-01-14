@@ -3,6 +3,8 @@
 
 #include "Characters/RPCCharacter.h"
 #include "Camera/CameraShakeBase.h"
+#include "NiagaraFunctionLibrary.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 ARPCCharacter::ARPCCharacter()
@@ -40,6 +42,14 @@ void ARPCCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
+void ARPCCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+
+	DOREPLIFETIME(ARPCCharacter, Health);
+}
+
 void ARPCCharacter::Fire()
 {
 	if (IsLocallyControlled())	// 내가 조종하는 캐릭터다.
@@ -61,15 +71,26 @@ void ARPCCharacter::Client_OnHit_Implementation()
 
 	APlayerController* PC = Cast<APlayerController>(GetController());
 	PC->ClientStartCameraShake(CameraShakeClass);
+
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), EffectClass, GetActorLocation() + FVector::UpVector * 100.0f, FRotator());
 }
 
 void ARPCCharacter::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("맞았음"));
+	if (HasAuthority())
+	{
+		Health -= Damage;
+
+		if (IsLocallyControlled())
+		{
+			OnRef_Health();	// 서버는 리플리케이션이 없으므로 수동으로 UI 같은 것들 갱신
+		}
+		//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("맞았음"));
 
 
-	Client_OnHit();	// ClientRPC로 호출
-	//Client_OnHit_Implementation(); // 그냥 호출해서 실행
+		Client_OnHit();	// ClientRPC로 호출
+		//Client_OnHit_Implementation(); // 그냥 호출해서 실행
+	}
 }
 
 void ARPCCharacter::Server_Fire_Implementation()
@@ -86,6 +107,11 @@ void ARPCCharacter::Server_Fire_Implementation()
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnLocation, SpawnRotator, SpawnParams);
 	}
+}
+
+void ARPCCharacter::OnRef_Health()
+{
+	UE_LOG(LogTemp, Log, TEXT("체력 : %f"), Health);
 }
 
 

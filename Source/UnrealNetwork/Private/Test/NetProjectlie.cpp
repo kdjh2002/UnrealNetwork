@@ -50,7 +50,8 @@ void ANetProjectlie::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Normal
 {
 	if (HasAuthority())	// 서버에서만 히트 처리
 	{
-		if (!bHitted && OtherActor->IsA<ACharacter>())	// 한번도 충돌한적 없고, 캐릭터와 캐릭터의 파생클래스만 처리
+		if (!bHitted && OtherActor->IsA<ACharacter>() // 한번도 충돌한적 없고, 캐릭터와 캐릭터의 파생클래스만 처리
+			&& this != OtherActor && GetOwner() != OtherActor)	
 		{
 			// 데미지 주기
 
