@@ -4,7 +4,7 @@
 #include "UI/DataLineWidget.h"
 #include "Components/TextBlock.h"
 
-void UDataLineWidget::UpdataName(FText InName)
+void UDataLineWidget::UpdateName(FText InName)
 {
 	Name->SetText(InName);
 }

@@ -17,7 +17,7 @@ class UNREALNETWORK_API UDataLineWidget : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void UpdataName(FText InName);
+	void UpdateName(FText InName);
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateIntValue(int32 InValue);
