@@ -9,15 +9,30 @@ ATestGameState::ATestGameState()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void ATestGameState::BeginPlay()
+{
+	Super::BeginPlay();
+	GameRemainingTime = GameDuration;
+}
+
 void ATestGameState::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (HasAuthority())
+	if (HasAuthority() && !bGameOver)
 	{
 		GameElapsedTime += DeltaTime;
-		UE_LOG(LogTemp, Log, TEXT("Time Update : %.2f"), GameElapsedTime);
+		//UE_LOG(LogTemp, Log, TEXT("Time Update : %.2f"), GameElapsedTime);
+	
+		GameRemainingTime -= DeltaTime;
+
+		if (GameRemainingTime < 0.0f)
+		{
+			GameRemainingTime = 0.0f;
+			bGameOver = true;
+		}
 	}
+
 }
 
 void ATestGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -25,4 +40,6 @@ void ATestGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ATestGameState, GameElapsedTime);		//#include "Net/UnrealNetwork.h"
+	DOREPLIFETIME(ATestGameState, GameRemainingTime);
+	DOREPLIFETIME(ATestGameState, GameRemainingTime);
 }
