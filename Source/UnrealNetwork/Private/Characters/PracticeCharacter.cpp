@@ -25,7 +25,7 @@ void APracticeCharacter::BeginPlay()
 	if (HealthWidgetComponent && HealthWidgetComponent->GetWidget())
 	{
 		HealthWidget = Cast<UDataLineWidget>(HealthWidgetComponent->GetWidget());
-		HealthWidget->UpdataName(FText::FromString(TEXT("Health")));
+		HealthWidget->UpdateName(FText::FromString(TEXT("Health")));
 
 	}
 	

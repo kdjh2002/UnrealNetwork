@@ -55,6 +55,15 @@ void APlayerStateCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 }
 
+void APlayerStateCharacter::Server_AddScore_Implementation(int32 Point)
+{
+	ATestPlayerState* PS = GetPlayerState<ATestPlayerState>();
+	if (PS)
+	{
+		PS->AddMyScore(Point);
+	}
+
+}
 
 void APlayerStateCharacter::Server_SetMyName_Implementation(const FString& NewName)
 {

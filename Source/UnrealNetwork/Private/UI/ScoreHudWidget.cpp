@@ -10,7 +10,7 @@
 void UScoreHudWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	Score->UpdataName(FText::FromString(TEXT("점수")));
+	Score->UpdateName(FText::FromString(TEXT("점수")));
 	Score->UpdateIntValue(0);
 
 	NameInput->OnTextCommitted.AddDynamic(this, &UScoreHudWidget::NameCommitted);

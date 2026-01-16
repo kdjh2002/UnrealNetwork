@@ -28,7 +28,7 @@ protected:
 	TObjectPtr<USphereComponent> Collision = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<USphereComponent> Mesh = nullptr;
+	TObjectPtr<UStaticMeshComponent> Mesh = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Score")
 	int32 Point = 10;
