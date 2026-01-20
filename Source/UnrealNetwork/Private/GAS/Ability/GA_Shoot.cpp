@@ -12,7 +12,7 @@ UGA_Shoot::UGA_Shoot()
 
 void UGA_Shoot::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-
+	//UE_LOG(LogTemp, Log, TEXT("Shot어빌리티 활성화"));
 	if (!HitEffectClass)
 	{
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
@@ -30,7 +30,7 @@ void UGA_Shoot::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 	if (HitScan(HitResult, Avatar))
 	{
 		//명중
-		DrawDebugLine(GetWorld(), Avatar->GetActorLocation(), HitResult.ImpactPoint, FColor::Yellow, false, 0.1f, 0, 1.0f);
+		DrawDebugLine(GetWorld(), Avatar->GetActorLocation(), HitResult.ImpactPoint, FColor::Yellow, false, 0.1f, 0, 3.0f);
 		DrawDebugPoint(GetWorld(), HitResult.ImpactPoint, 10.0f, FColor::Red, false, 0.1f);
 
 		AActor* Target = HitResult.GetActor();
@@ -51,8 +51,12 @@ void UGA_Shoot::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 	else
 	{
 		//빗나감
-		DrawDebugLine(GetWorld(), Avatar->GetActorLocation(), HitResult.ImpactPoint, FColor::Green, false, 0.1f, 0, 1.0f);
-
+		//DrawDebugLine(GetWorld(), Avatar->GetActorLocation(), HitResult.ImpactPoint, FColor::Green, false, 0.1f, 0, 1.0f);
+		FVector End = Avatar->GetActorLocation() + Avatar->GetActorForwardVector() * ShootRange;
+		DrawDebugLine(GetWorld(),
+			Avatar->GetActorLocation(), End,
+			FColor::Green, false, 0.1f, 0, 3.0f);
+		DrawDebugPoint(GetWorld(), End, 10.0f, FColor::Red, false, 0.1f);
 	}
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }

@@ -19,6 +19,7 @@ public:
 	AGASPlayerCharacter();
 
 protected:
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void UnPossessed() override;
 	virtual void OnRep_PlayerState() override;
@@ -29,6 +30,8 @@ protected:
 	void Server_ExecuteAbility1();
 
 private:
+	void InitializeInputBind(AController* ControllerToBind);
+	void ClearInputBind();
 	void InitializeAbilitySystem();
 	virtual void OnHealthChanged(const FOnAttributeChangeData& Data);
 
