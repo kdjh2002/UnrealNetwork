@@ -49,12 +49,13 @@ void AGASCharacter::BeginPlay()
 			HealthWidget->UpdateName(FText::AsNumber(ResourceAttributeSet->GetHealth()));
 			HealthWidget->UpdateIntValue(FMath::FloorToInt32(ResourceAttributeSet->GetMaxHealth()));
 		}
+
 		if (HasAuthority())
 		{
 		ASC->GiveAbility(
 			FGameplayAbilitySpec(AbilityClass, 1, -1, this));
 
-		}
+		}	//보안 문제 때문에 서버에서만 줄 수 있어야 한다.
 
 	}
 	
@@ -86,6 +87,7 @@ void AGASCharacter::OnHealthChanged(const FOnAttributeChangeData& Data)
 		HealthWidget->UpdateIntValue(FMath::FloorToInt32(ResourceAttributeSet->GetMaxHealth()));
 	}
 }
+
 
 void AGASCharacter::TestActivateAbility()
 {

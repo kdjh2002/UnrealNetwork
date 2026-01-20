@@ -1,0 +1,34 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/PlayerController.h"
+#include "TestPlayerController.generated.h"
+
+DECLARE_DELEGATE(FOnAbilityPress)
+/**
+ * 
+ */
+UCLASS()
+class UNREALNETWORK_API ATestPlayerController : public APlayerController
+{
+	GENERATED_BODY()
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
+
+	void OnInputAbility1();
+
+public:
+	FOnAbilityPress OnAbility1Press;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<class UInputMappingContext> AbilityMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<class UInputAction> IA_Ability1 = nullptr;
+	
+};
