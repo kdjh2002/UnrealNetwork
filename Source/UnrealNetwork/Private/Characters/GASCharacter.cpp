@@ -43,17 +43,19 @@ void AGASCharacter::BeginPlay()
 			ASC->GetGameplayAttributeValueChangeDelegate(UTestAttributeSet::GetHealthAttribute());
 		onHealthChange.AddUObject(this, &AGASCharacter::OnHealthChanged);
 
-		ASC->GiveAbility(
-			FGameplayAbilitySpec(
-				AbilityClass, 1, -1, this)
-		);
-
 		if (Widget && Widget->GetWidget())
 		{
 			UDataLineWidget* HealthWidget = Cast<UDataLineWidget>(Widget->GetWidget());
 			HealthWidget->UpdateName(FText::AsNumber(ResourceAttributeSet->GetHealth()));
 			HealthWidget->UpdateIntValue(FMath::FloorToInt32(ResourceAttributeSet->GetMaxHealth()));
 		}
+		if (HasAuthority())
+		{
+		ASC->GiveAbility(
+			FGameplayAbilitySpec(AbilityClass, 1, -1, this));
+
+		}
+
 	}
 	
 }
